@@ -1,16 +1,16 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { StyleSheet, View, Animated, RefreshControl } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
-import { SunsetIndexGauge } from '@/components/index/SunsetIndexGauge';
 import { AtmosphericBreakdown } from '@/components/index/AtmosphericBreakdown';
 import { FiveDayForecast } from '@/components/index/FiveDayForecast';
-import { SunsetData } from '@/services/mock-data';
-import { locationService, DeviceLocation } from '@/services/location-service';
-import { useGloamTheme } from '@/hooks/use-theme';
-import { AppIcon } from '@/components/ui/app-icon';
+import { SunsetIndexGauge } from '@/components/index/SunsetIndexGauge';
 import { SkyBackground } from '@/components/sky-background';
+import { ThemedText } from '@/components/themed-text';
+import { AppIcon } from '@/components/ui/app-icon';
+import { Spacing } from '@/constants/theme';
+import { useGloamTheme } from '@/hooks/use-theme';
+import { DeviceLocation, locationService } from '@/services/location-service';
+import { SunsetData } from '@/services/mock-data';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, RefreshControl, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ForecastScreen() {
   const insets = useSafeAreaInsets();
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
   },
   bannerBackground: {
-    backgroundColor: 'rgba(10, 8, 18, 0.85)',
+    backgroundColor: '#000',
     borderBottomLeftRadius: 32, // Rounded background corners
     borderBottomRightRadius: 32,
     borderBottomWidth: 1,
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.four,
     paddingVertical: Spacing.three + 2,
     borderRadius: 26,
-    backgroundColor: 'rgba(19, 14, 27, 0.85)',
+    backgroundColor: '#000',
     borderWidth: 1,
     borderColor: 'rgba(255, 122, 89, 0.22)',
     marginBottom: Spacing.two,
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: 'rgba(255, 122, 89, 0.12)',
+    backgroundColor: '#000',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 9,
     paddingVertical: 5,
     borderRadius: 14,
-    backgroundColor: 'rgba(255, 122, 89, 0.14)',
+    backgroundColor: '#000',
   },
   liveDot: {
     width: 6,
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'rgba(18, 14, 25, 0.85)',
+    backgroundColor: '#000',
     borderRadius: 22,
     padding: Spacing.four,
     marginBottom: Spacing.two,
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     marginVertical: Spacing.two,
     alignItems: 'center',
-    backgroundColor: 'rgba(18, 14, 25, 0.85)',
+    backgroundColor: '#000',
     borderWidth: 1,
     borderColor: 'rgba(255, 122, 89, 0.18)',
   },
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
   divider: {
     width: 1,
     height: 48,
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: '#000',
   },
   timingLabel: {
     fontSize: 11,

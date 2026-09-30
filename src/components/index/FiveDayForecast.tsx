@@ -40,7 +40,7 @@ export function FiveDayForecast({ forecasts }: Props) {
               style={[
                 styles.card,
                 {
-                  backgroundColor: '#120E19',
+                  backgroundColor: '#000',
                   borderColor: 'rgba(255, 122, 89, 0.15)',
                 },
               ]}>
