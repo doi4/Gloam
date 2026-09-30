@@ -22,6 +22,7 @@ export interface SunsetData {
   visibility: number;
   vibrancy: number;
   humidity: number;
+  temperature?: number;
   historicPhotos?: { id: string; url: string; score: number; date: string }[];
   forecastNext5Days: DailyForecast[];
 }
@@ -112,6 +113,7 @@ export const MOCK_SUNSETS_BY_LOCATION: Record<string, SunsetData> = {
     visibility: 98,
     vibrancy: 95,
     humidity: 48,
+    temperature: 72,
     forecastNext5Days: MOCK_5_DAY_FORECAST,
   },
   'Santa Monica, CA': {
@@ -126,6 +128,7 @@ export const MOCK_SUNSETS_BY_LOCATION: Record<string, SunsetData> = {
     visibility: 92,
     vibrancy: 88,
     humidity: 55,
+    temperature: 70,
     forecastNext5Days: MOCK_5_DAY_FORECAST,
   },
   'Miami Beach, FL': {
@@ -140,6 +143,7 @@ export const MOCK_SUNSETS_BY_LOCATION: Record<string, SunsetData> = {
     visibility: 85,
     vibrancy: 80,
     humidity: 72,
+    temperature: 84,
     forecastNext5Days: MOCK_5_DAY_FORECAST,
   },
   'Honolulu, HI': {
@@ -154,6 +158,7 @@ export const MOCK_SUNSETS_BY_LOCATION: Record<string, SunsetData> = {
     visibility: 99,
     vibrancy: 98,
     humidity: 60,
+    temperature: 82,
     forecastNext5Days: MOCK_5_DAY_FORECAST,
   },
 };

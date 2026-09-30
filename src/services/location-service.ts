@@ -27,6 +27,30 @@ export function formatIsoTo12Hour(isoString: string): string {
   }
 }
 
+// Astronomical solar altitude calculation (elevation in degrees)
+export function getSolarAltitude(date: Date, latDeg: number, lonDeg: number): number {
+  const rad = Math.PI / 180;
+  const lat = latDeg * rad;
+
+  const startOfYear = new Date(date.getFullYear(), 0, 0);
+  const diff = date.getTime() - startOfYear.getTime();
+  const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  const declination = -23.44 * rad * Math.cos(((360 / 365) * (dayOfYear + 10)) * rad);
+  const b = ((360 / 365) * (dayOfYear - 81)) * rad;
+  const eot = 9.87 * Math.sin(2 * b) - 7.53 * Math.cos(b) - 1.5 * Math.sin(b);
+
+  const utcHours = date.getUTCHours() + date.getUTCMinutes() / 60 + date.getUTCSeconds() / 3600;
+  const timeOffset = (lonDeg * 4) / 60;
+  const solarTime = (utcHours + timeOffset + eot / 60 + 24) % 24;
+  const hourAngle = (solarTime - 12) * 15 * rad;
+
+  const sinElevation =
+    Math.sin(lat) * Math.sin(declination) +
+    Math.cos(lat) * Math.cos(declination) * Math.cos(hourAngle);
+  return Math.asin(Math.max(-1, Math.min(1, sinElevation))) / rad;
+}
+
 // Compute golden hour window from sunset ISO string
 function computeGoldenHour(sunsetIso: string): { start: string; end: string } {
   try {
@@ -204,7 +228,7 @@ class LocationService {
   // Query real-time solar times and atmospheric conditions from Open-Meteo
   async fetchRealSunsetForecast(lat: number, lon: number, locationName: string): Promise<void> {
     try {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=relative_humidity_2m,cloud_cover,visibility&daily=sunrise,sunset&timezone=auto`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,cloud_cover,visibility&daily=sunrise,sunset&timezone=auto&temperature_unit=fahrenheit`;
       const res = await fetch(url);
       if (!res.ok) return;
 
@@ -214,6 +238,7 @@ class LocationService {
 
       const cloudCover = current.cloud_cover ?? 22;
       const humidity = current.relative_humidity_2m ?? 48;
+      const temperature = current.temperature_2m ?? 72;
       const visibility = Math.round(Math.min(99, ((current.visibility ?? 35000) / 40000) * 100));
 
       const { index, vibrancy, ratingLabel } = computeAtmosphericScore(
@@ -279,6 +304,7 @@ class LocationService {
         visibility,
         vibrancy,
         humidity,
+        temperature,
         forecastNext5Days: forecastNext5Days.length === 5 ? forecastNext5Days : MOCK_5_DAY_FORECAST,
       };
 

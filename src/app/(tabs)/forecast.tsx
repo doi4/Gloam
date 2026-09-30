@@ -10,6 +10,7 @@ import { SunsetData } from '@/services/mock-data';
 import { locationService, DeviceLocation } from '@/services/location-service';
 import { useGloamTheme } from '@/hooks/use-theme';
 import { AppIcon } from '@/components/ui/app-icon';
+import { SkyBackground } from '@/components/sky-background';
 
 export default function ForecastScreen() {
   const insets = useSafeAreaInsets();
@@ -65,6 +66,8 @@ export default function ForecastScreen() {
 
   return (
     <View style={styles.container}>
+      <SkyBackground />
+
       {/* Whole Top Banner Spot (Bigger with multi-phase scroll animation) */}
       <View style={styles.topBannerSpot}>
         {/* Layer 1: Solid Black Rounded Banner Background (Fades out first on scroll) */}
@@ -142,6 +145,29 @@ export default function ForecastScreen() {
           </View>
         </View>
 
+        {/* Basic Weather Info Card */}
+        {sunset.temperature !== undefined && (
+          <View style={styles.weatherCard}>
+            <View style={styles.weatherInfoLeft}>
+              <AppIcon name="sun" size={24} color="#FFA726" />
+              <View>
+                <ThemedText style={styles.weatherTemp}>
+                  {Math.round(sunset.temperature)}°F
+                </ThemedText>
+                <ThemedText style={styles.weatherDesc}>
+                  Current Temperature
+                </ThemedText>
+              </View>
+            </View>
+            <View style={styles.weatherInfoRight}>
+              <View style={styles.weatherMetric}>
+                <ThemedText style={styles.weatherMetricLabel}>Humidity</ThemedText>
+                <ThemedText style={styles.weatherMetricValue}>{sunset.humidity}%</ThemedText>
+              </View>
+            </View>
+          </View>
+        )}
+
         {/* Animated Sunset Index Gauge with Pulsing Breathing Rings */}
         <SunsetIndexGauge score={sunset.index} ratingLabel={sunset.ratingLabel} />
 
@@ -190,7 +216,7 @@ export default function ForecastScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: 'transparent',
   },
   topBannerSpot: {
     position: 'absolute',
@@ -201,7 +227,7 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
   },
   bannerBackground: {
-    backgroundColor: '#000000',
+    backgroundColor: 'rgba(10, 8, 18, 0.85)',
     borderBottomLeftRadius: 32, // Rounded background corners
     borderBottomRightRadius: 32,
     borderBottomWidth: 1,
@@ -254,7 +280,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.four,
     paddingVertical: Spacing.three + 2,
     borderRadius: 26,
-    backgroundColor: '#130E1B',
+    backgroundColor: 'rgba(19, 14, 27, 0.85)',
     borderWidth: 1,
     borderColor: 'rgba(255, 122, 89, 0.22)',
     marginBottom: Spacing.two,
@@ -303,13 +329,55 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     letterSpacing: 1,
   },
+  weatherCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'rgba(18, 14, 25, 0.85)',
+    borderRadius: 22,
+    padding: Spacing.four,
+    marginBottom: Spacing.two,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  weatherInfoLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.three,
+  },
+  weatherTemp: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#FFFFFF',
+  },
+  weatherDesc: {
+    fontSize: 12,
+    color: '#8E8E93',
+    marginTop: 2,
+  },
+  weatherInfoRight: {
+    alignItems: 'flex-end',
+  },
+  weatherMetric: {
+    alignItems: 'center',
+  },
+  weatherMetricLabel: {
+    fontSize: 11,
+    color: '#8E8E93',
+    marginBottom: 2,
+  },
+  weatherMetricValue: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
   timingCard: {
     flexDirection: 'row',
     borderRadius: 26,
     padding: Spacing.four,
     marginVertical: Spacing.two,
     alignItems: 'center',
-    backgroundColor: '#120E19',
+    backgroundColor: 'rgba(18, 14, 25, 0.85)',
     borderWidth: 1,
     borderColor: 'rgba(255, 122, 89, 0.18)',
   },
